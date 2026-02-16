@@ -1,0 +1,67 @@
+
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: doctorshift_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: doctorshift
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: doctorshift_php
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - mysql
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: doctorshift_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - php
+
+  node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    container_name: doctorshift_node
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    command: sh -c "cd /app && npm install && npm run dev -- --host"
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    container_name: doctorshift_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+
+
+volumes:
+  mysql_data:
