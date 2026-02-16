@@ -1,40 +1,15 @@
-import { useEffect, useState } from 'react';
-
-interface Message {
-  id: number;
-  text: string;
-}
+import { RouterProvider } from 'react-router';
+import router from './routes/Router';
+import './css/globals.css';
+import { ThemeProvider } from './components/provider/theme-provider';
 
 function App() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/messages')
-      .then((res) => res.json())
-      .then((data) => {
-        setMessages(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching messages:', err);
-        setLoading(false);
-      });
-  }, []);
-
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Messages from Laravel API</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {messages.map((msg) => (
-            <li key={msg.id}>{msg.text}</li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <RouterProvider router={router} />
+      </ThemeProvider>
+    </>
   );
 }
 

@@ -1,0 +1,17 @@
+# Node & React
+/frontend/node_modules
+/frontend/dist
+/frontend/.env
+
+# Laravel & PHP
+/backend/vendor
+/backend/node_modules
+/backend/.env
+/backend/storage/*.key
+
+# Docker (ignorer logs, pas Dockerfiles)
+/docker/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
