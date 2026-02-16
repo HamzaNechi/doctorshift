@@ -5,8 +5,8 @@
 
 
 
-import Logo from "src/assets/images/logos/dark-logo.svg";
-import Logowhite from "src/assets/images/logos/light-logo.svg";
+import Logo from "src/assets/images/logos/logo-light.png";
+import Logowhite from "src/assets/images/logos/logo-dark.png";
 
 
 const FullLogo = () => {
